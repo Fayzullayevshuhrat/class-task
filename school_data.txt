@@ -1,0 +1,1 @@
+{'name': 'Elite High School', 'students': 2, 'teachers': 1, 'courses': 1}
