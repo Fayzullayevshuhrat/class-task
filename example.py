@@ -1,21 +1,21 @@
 import json
+from uuid import uuid4
 from abc import ABC, abstractmethod
-
 
 class Person(ABC):
     def __init__(self, name, age):
-        self._name = name  # Encapsulation
+        self._name = name
         self._age = age
 
     @abstractmethod
     def get_info(self):
-        return f"{self._name}, {self._age}"
+        pass
 
 
 class Student(Person):
-    def __init__(self, name, age, student_id):
+    def __init__(self, name, age, student_id=None):
         super().__init__(name, age)
-        self.student_id = student_id
+        self.student_id = student_id if student_id else str(uuid4())  # UUID stringga o‘zgartirildi
 
     def get_info(self):
         return f"Student: {self._name}, Age: {self._age}, ID: {self.student_id}"
@@ -36,39 +36,56 @@ class Course:
         self.teacher = teacher
         self.students = []
 
-    def add_student(self, student):
-        self.students.append(student)
-
     def get_info(self):
         return f"Course: {self.name}, Teacher: {self.teacher.get_info()}, Students: {len(self.students)}"
+
+    def add_student(self, student):
+        if student not in self.students:
+            self.students.append(student)
+            print(" Student qo‘shildi!")
+        else:
+            print("️ Student allaqachon ro‘yxatda.")
 
 
 class School:
     def __init__(self, name):
         self.name = name
-        self.students = []
         self.teachers = []
         self.courses = []
+        self.students = []
+
+    def get_info(self):
+        return f"School: {self.name}, Teachers: {len(self.teachers)}, Courses: {len(self.courses)}, Students: {len(self.students)}"
 
     def add_student(self, student):
-        self.students.append(student)
+        if student not in self.students:
+            self.students.append(student)
+            print("Student qo‘shildi!")
+        else:
+            print("Student allaqachon ro‘yxatda.")
 
     def add_teacher(self, teacher):
-        self.teachers.append(teacher)
+        if teacher not in self.teachers:
+            self.teachers.append(teacher)
+            print("Teacher qo‘shildi!")
+        else:
+            print("Teacher allaqachon ro‘yxatda.")
 
     def add_course(self, course):
-        self.courses.append(course)
+        if course not in self.courses:
+            self.courses.append(course)
+            print(" Kurs qo‘shildi!")
+        else:
+            print(" Kurs allaqachon mavjud.")
 
-    def get_data(self):
-        return f"School: {self.name}, Students: {len(self.students)}, Teachers: {len(self.teachers)}, Courses: {len(self.courses)}"
 
 
-
-class DataManager:
+class Save:
     @staticmethod
     def save_to_file(filename, data):
         with open(filename, 'w') as file:
             json.dump(data, file, indent=4)
+        print(f" {filename} saqlandi!")
 
     @staticmethod
     def load_from_file(filename):
@@ -76,24 +93,28 @@ class DataManager:
             with open(filename, 'r') as file:
                 return json.load(file)
         except FileNotFoundError:
+            print("Fayl topilmadi!")
             return None
 
 
-# Example Usage
-school = School("Elite High School")
 
-student1 = Student("Alice", 15, "S001")
-student2 = Student("Bob", 16, "S002")
-teacher1 = Teacher("Mr. Smith", 40, "Mathematics")
+class Manage:
+    def __init__(self, school):
+        self.school = school
 
-course1 = Course("Algebra", teacher1)
-course1.add_student(student1)
-course1.add_student(student2)
+    def show_info(self):
+        print(self.school.get_info())
 
-school.add_student(student1)
-school.add_student(student2)
-school.add_teacher(teacher1)
-school.add_course(course1)
 
-# Save data to JSON
-DataManager.save_to_file("school_data.json", school.get_data())
+
+    def save_data(self, filename):
+        data = self.school.get_info()
+        Save.save_to_file(filename, data)
+
+    def load_data(self, filename):
+        data = Save.load_from_file(filename)
+        if data:
+            print("Ma'lumotlar yuklandi:", data)
+
+
+

@@ -1,4 +1,4 @@
-from task2 import Person,Student,Teacher,Course,School
+from new import *
 
 p = Person(" Shuhrat",17)
 p.get_info()

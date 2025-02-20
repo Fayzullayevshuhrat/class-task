@@ -1,9 +1,5 @@
-import json
-
+from uuid import uuid4
 from abc import ABC, abstractmethod
-
-from example import student1
-
 
 class Person(ABC):
     def __init__(self, name, age):
@@ -14,12 +10,10 @@ class Person(ABC):
     def get_info(self):
         pass
 
-
-
 class Student(Person):
-    def __init__(self, name, age, student_id):
+    def __init__(self, name, age, student_id=None):
         super().__init__(name, age)
-        self.student_id = student_id
+        self.student_id = student_id if student_id else str(uuid4())  # UUID ni stringga o'zgartirdik
 
     def get_info(self):
         return f"Student: {self._name}, Age: {self._age}, ID: {self.student_id}"
@@ -42,53 +36,40 @@ class Course(ABC):
 
     @abstractmethod
     def get_info(self):
-        return f"Course: {self.name}, Teacher: {self.teacher.get_info()}, Students: {len(self.students)}"
+        pass
 
     def add_student(self, student):
-        self.students.append(student)
         if student not in self.students:
-            print("Student not added")
+            self.students.append(student)
+            print("Student Qo'shildi")
         else:
-            print("Student added")
-
-
+            print("Student Qo'shilmadi")
 
 
 class School(Course):
-    def __init__(self, name, teacher):
-        super().__init__(name, teacher)
-        self.name = name
-        self.students = []
+    def __init__(self, name):
+        super().__init__(name,Teacher("Mr Azamjon", 24, "IT"))
         self.teachers = []
         self.courses = []
+
     def get_info(self):
+        return f"School: {self.name}, Teacher: {self.teacher.get_info()}, Students: {len(self.students)}"
 
-        return f"School: {self.name}, Students: {len(self.students)}"
     def add_student(self, student):
-        self.students.append(student,)
         if student not in self.students:
-            print("Student qo'shilmadi")
-        else:
+            self.students.append(student)
             print("Student qo'shildi")
+        else:
+            print("Student allaqachon ro'yxatda")
 
 
-# p= Student("Shuhrat",23,"999" )
-# print(p.get_info())
-# t = Teacher("Mr.Azamjon", 24, "IT")
+# s = Student("Shuhrat", 17)
+# print(s.get_info())
+#
+# t = Teacher("Mr Azamjon", 24, "IT")
 # print(t.get_info())
-# s = School("PDP school", t)
-# print(s.get_info())
-# s.add_student(p)
-# s.add_student("Bobur")
 #
-# print(s.get_info())
 #
-
-
-
-
-
-
-
-
-
+# teacher = Teacher("Alibek", 26, "Math")
+# sch = School("PDP",)
+# print(sch.get_info())
