@@ -15,7 +15,7 @@ class Person(ABC):
 class Student(Person):
     def __init__(self, name, age, student_id=None):
         super().__init__(name, age)
-        self.student_id = student_id if student_id else str(uuid4())  # UUID stringga o‘zgartirildi
+        self.student_id = student_id if student_id else str(uuid4())
 
     def get_info(self):
         return f"Student: {self._name}, Age: {self._age}, ID: {self.student_id}"
