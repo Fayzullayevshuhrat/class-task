@@ -116,5 +116,50 @@ class Manage:
         if data:
             print("Ma'lumotlar yuklandi:", data)
 
+school = School("PDP Academy")
+manager = Manage(school)
+while True:
+    print("\n--- Maktab boshqaruv tizimi ---")
+    print("1. Talaba qo'shish")
+    print("2. O'qituvchi qo'shish")
+    print("4. Maktab ma'lumotlarini ko'rish")
+    print("5. Ma'lumotlarni saqlash")
+    print("6. Ma'lumotlarni yuklash")
+    print("7. Chiqish")
+
+    choice = input("Tanlang (1-7): ")
+
+    if choice == "1":
+        name = input("Talabaning ismi: ")
+        age = int(input("Yoshi: "))
+        student = Student(name, age)
+        school.add_student(student)
+
+    elif choice == "2":
+        name = input("O'qituvchining ismi: ")
+        age = int(input("Yoshi: "))
+        subject = input("Fan: ")
+        teacher = Teacher(name, age, subject)
+        school.add_teacher(teacher)
+
+
+    elif choice == "4":
+        manager.show_info()
+
+    elif choice == "5":
+        filename = input("Fayl nomini kiriting: ")
+        manager.save_data(filename)
+
+    elif choice == "6":
+        filename = input("Fayl nomini kiriting: ")
+        manager.load_data(filename)
+
+    elif choice == "7":
+        print("Dastur yakunlandi!")
+        break
+
+    else:
+        print("Noto'g'ri tanlov, qayta urinib ko'ring!")
+
 
 
